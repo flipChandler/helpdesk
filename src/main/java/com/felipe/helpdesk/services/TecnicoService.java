@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.felipe.helpdesk.TecnicoMapper;
 import com.felipe.helpdesk.domain.Tecnico;
@@ -35,5 +36,15 @@ public class TecnicoService {
 	public List<TecnicoDTO> findAll() {
 		List<Tecnico> list = tecnicoRepository.findAll();
 		return list.stream().map(t -> new TecnicoDTO(t)).collect(Collectors.toList()) ;
+	}
+
+	@Transactional
+	public TecnicoDTO create(TecnicoDTO dto) {
+		dto.setId(null);
+		Tecnico tecnico = tecnicoMapper.toEntity(dto);
+		tecnico = tecnicoRepository.save(tecnico);
+		dto = tecnicoMapper.toDTO(tecnico);		
+		
+		return dto;
 	}
 }
