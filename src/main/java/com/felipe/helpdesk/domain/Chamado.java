@@ -53,6 +53,10 @@ public class Chamado implements Serializable {
 		this.tecnico = tecnico;
 		this.cliente = cliente;
 	}
+	
+	public Chamado() {
+		
+	}
 
 	public Integer getId() {
 		return id;
