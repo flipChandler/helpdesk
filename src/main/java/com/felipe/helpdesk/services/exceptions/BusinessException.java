@@ -1,6 +1,6 @@
 package com.felipe.helpdesk.services.exceptions;
 
-public class BusinessException extends RuntimeException {
+public abstract class BusinessException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

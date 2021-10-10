@@ -13,8 +13,8 @@ import com.felipe.helpdesk.util.MessageUtils;
 @ControllerAdvice // controla essa classe quando uma exceção for lançada
 public class ExceptionsHandler extends ResponseEntityExceptionHandler {
 	
-	@ExceptionHandler(BusinessException.class)
-	public ResponseEntity<StandardError> objectNotFoundException(BusinessException ex,
+	@ExceptionHandler(ObjectNotFoundException.class)
+	public ResponseEntity<StandardError> objectNotFoundException(ObjectNotFoundException ex,
 			HttpServletRequest request) {
 		
 		StandardError error = new StandardError(
@@ -25,5 +25,19 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
 				request.getRequestURI());		
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);		
+	}
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<StandardError> dataIntegrityViolationException(DataIntegrityViolationException ex,
+			HttpServletRequest request) {
+		
+		StandardError error = new StandardError(
+				System.currentTimeMillis(), 
+				HttpStatus.BAD_REQUEST.value(),
+				MessageUtils.DATA_INTEGRITY_VIOLATION,
+				ex.getMessage(),
+				request.getRequestURI());		
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);		
 	}
 }
