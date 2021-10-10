@@ -1,7 +1,10 @@
 package com.felipe.helpdesk.resources;
 
+
 import java.net.URI;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.felipe.helpdesk.domain.dto.TecnicoDTO;
 import com.felipe.helpdesk.services.TecnicoService;
+
+
 
 @RestController
 @RequestMapping(value = "/tecnicos")
@@ -36,7 +41,7 @@ public class TecnicoResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<TecnicoDTO> create(@RequestBody TecnicoDTO dto) {
+	public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO dto) {
 		dto = tecnicoService.create(dto);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()

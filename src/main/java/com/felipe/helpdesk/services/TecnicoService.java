@@ -58,12 +58,12 @@ public class TecnicoService {
 
 	private void validarPorCpfEEmail(TecnicoDTO dto) {
 		Optional<Pessoa> optional = pessoaRepository.findByCpf(dto.getCpf());
-		if (optional.isPresent() && optional.get().getId() != dto.getId()) {
+		if (optional.isPresent()) {
 			throw new DataIntegrityViolationException(MessageUtils.CPF_ALREADY_EXISTS);
 		}
 		
 		optional = pessoaRepository.findByEmail(dto.getEmail());
-		if (optional.isPresent() && optional.get().getId() != dto.getId()) {
+		if (optional.isPresent()) {
 			throw new DataIntegrityViolationException(MessageUtils.EMAIL_ALREADY_EXISTS);
 		}
 	}

@@ -4,14 +4,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.felipe.helpdesk.util.MessageUtils;
 
 @ControllerAdvice // controla essa classe quando uma exceção for lançada
-public class ExceptionsHandler extends ResponseEntityExceptionHandler {
+public class ExceptionsHandler {
 	
 	@ExceptionHandler(ObjectNotFoundException.class)
 	public ResponseEntity<StandardError> objectNotFoundException(ObjectNotFoundException ex,
@@ -39,5 +40,24 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
 				request.getRequestURI());		
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);		
+	}	
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<StandardError> validationErrors(MethodArgumentNotValidException ex,
+			HttpServletRequest request) {
+		
+		ValidationError errors = new ValidationError(
+				System.currentTimeMillis(), 
+				HttpStatus.BAD_REQUEST.value(),
+				MessageUtils.ARGUMENT_NOT_VALID,
+				MessageUtils.VALIDATION_ERROR_MESSAGE,
+				request.getRequestURI());
+		
+		for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+			errors.addError(fieldError.getField(), fieldError.getDefaultMessage());
+		}		
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);		
 	}
+	
 }
