@@ -1,6 +1,8 @@
 package com.felipe.helpdesk.services;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +30,10 @@ public class TecnicoService {
 		
 		TecnicoDTO dto = tecnicoMapper.toDTO(optional.get());
 		return dto;
+	}
+
+	public List<TecnicoDTO> findAll() {
+		List<Tecnico> list = tecnicoRepository.findAll();
+		return list.stream().map(t -> new TecnicoDTO(t)).collect(Collectors.toList()) ;
 	}
 }

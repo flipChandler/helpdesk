@@ -1,5 +1,7 @@
 package com.felipe.helpdesk.resources;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,12 @@ public class TecnicoResource {
 	public ResponseEntity<TecnicoDTO> findById(@PathVariable Integer id) {
 		TecnicoDTO tecnicoDTO = tecnicoService.findById(id);
 		return ResponseEntity.ok(tecnicoDTO);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<TecnicoDTO>> finAll() {
+		List<TecnicoDTO> list = tecnicoService.findAll();
+		return ResponseEntity.ok(list);
 	}
 	
 	
