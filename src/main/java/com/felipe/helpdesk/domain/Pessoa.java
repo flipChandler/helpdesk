@@ -24,8 +24,7 @@ public abstract class Pessoa implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	protected Integer id;
 	protected String nome;
 	
@@ -102,6 +101,10 @@ public abstract class Pessoa implements Serializable{
 		return perfis.stream()
 				.map(perfil -> Perfil.toEnum(perfil))
 				.collect(Collectors.toSet());
+	}	
+	
+	public void setPerfis(Set<Integer> perfis) {
+		this.perfis = perfis;
 	}
 
 	public void addPerfil(Perfil perfil) {
