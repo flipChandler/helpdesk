@@ -94,10 +94,6 @@ public class TecnicoDTO implements Serializable{
 		return perfis;
 	}
 
-	public void setPerfis(Set<Perfil> perfis) {
-		this.perfis = perfis;
-	}
-	
 	public void addPerfil(Perfil perfil) {
 		this.perfis.add(perfil);
 	}
@@ -108,6 +104,5 @@ public class TecnicoDTO implements Serializable{
 
 	public void setDataCriacao(LocalDate dataCriacao) {
 		this.dataCriacao = dataCriacao;
-	}	
-	
+	}		
 }

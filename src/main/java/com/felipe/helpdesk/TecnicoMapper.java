@@ -1,7 +1,5 @@
 package com.felipe.helpdesk;
 
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 
 import com.felipe.helpdesk.domain.Tecnico;
@@ -19,8 +17,9 @@ public class TecnicoMapper {
 		entity.setEmail(dto.getEmail());
 		entity.setSenha(dto.getSenha());
 		entity.setDataCriacao(dto.getDataCriacao());
-		entity.setPerfis(dto.getPerfis().stream()
-				.map(p -> p.getCodigo()).collect(Collectors.toSet()));
+		
+		dto.getPerfis().forEach(p -> entity.addPerfil(p));
+		
 		return entity;
 	}
 	
@@ -32,8 +31,11 @@ public class TecnicoMapper {
 		dto.setEmail(entity.getEmail());
 		dto.setSenha(entity.getSenha());
 		dto.setDataCriacao(entity.getDataCriacao());	
-		dto.setPerfis(entity.getPerfis().stream()
-				.map(p -> Perfil.toEnum(p.getCodigo())).collect(Collectors.toSet()));
+		
+		for (Perfil p : entity.getPerfis()) {
+			dto.addPerfil(Perfil.toEnum(p.getCodigo()));
+		}
+		
 		return dto;
 	}
 }

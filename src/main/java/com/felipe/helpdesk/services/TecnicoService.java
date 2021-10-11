@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +56,18 @@ public class TecnicoService {
 		
 		return dto;
 	}
+	
+	@Transactional
+	public TecnicoDTO update(Integer id, TecnicoDTO dto) {
+		dto.setId(id);
+		Optional<Tecnico> optional = tecnicoRepository.findById(id);
+		
+		Tecnico tecnico = optional.get();
+		BeanUtils.copyProperties(dto, tecnico, "id");
+		
+		tecnicoRepository.save(tecnico);
+		return tecnicoMapper.toDTO(tecnico); 
+	}
 
 	private void validarPorCpfEEmail(TecnicoDTO dto) {
 		Optional<Pessoa> optional = pessoaRepository.findByCpf(dto.getCpf());
@@ -67,4 +80,6 @@ public class TecnicoService {
 			throw new DataIntegrityViolationException(MessageUtils.EMAIL_ALREADY_EXISTS);
 		}
 	}
+
+	
 }
