@@ -3,15 +3,8 @@ package com.felipe.helpdesk.domain.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.felipe.helpdesk.domain.Chamado;
-import com.felipe.helpdesk.domain.Cliente;
-import com.felipe.helpdesk.domain.Tecnico;
-import com.felipe.helpdesk.domain.enums.Prioridade;
-import com.felipe.helpdesk.domain.enums.Status;
 
 
 public class ChamadoDTO implements Serializable {
@@ -27,46 +20,35 @@ public class ChamadoDTO implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataFechamento;
 
-	private Prioridade prioridade;
-	private Status status;
+	private Integer prioridade;
+	private Integer status;
 	private String titulo;
 	private String observacoes;
 	
-	private TecnicoDTO tecnicoDTO;
-	
-	private ClienteDTO clienteDTO;
-	
-	@Autowired
-	private ModelMapper mapper;
-	
-	
-	public ChamadoDTO(Integer id, Prioridade prioridade, Status status, String titulo, String observacoes) {
-		super();
-		this.id = id;
-		this.prioridade = prioridade;
-		this.status = status;
-		this.titulo = titulo;
-		this.observacoes = observacoes;
-	}
-	
-	public ChamadoDTO(Chamado chamado) {
-		this.id = chamado.getId();
-		this.prioridade = chamado.getPrioridade();
-		this.status = chamado.getStatus();
-		this.titulo = chamado.getTitulo();
-		this.observacoes = chamado.getObservacoes();
-	}
-	
-	public ChamadoDTO(Chamado chamado, Tecnico tecnico, Cliente cliente) {
-		this(chamado);
-		this.clienteDTO = mapper.map(cliente, ClienteDTO.class);
-		this.tecnicoDTO = mapper.map(tecnico, TecnicoDTO.class);
-	}
-	
-	public ChamadoDTO() {
+	private Integer tecnico;	
+	private Integer cliente;
+	private String nomeTecnico;
+	private String nomeCliente;
 		
+	public ChamadoDTO() {
+		super();
 	}
-	
+
+	public ChamadoDTO(Chamado entity) {
+		super();
+		this.id = entity.getId();
+		this.dataAbertura = entity.getDataAbertura();
+		this.dataFechamento = entity.getDataFechamento();
+		this.prioridade = entity.getPrioridade().getCodigo();
+		this.status = entity.getStatus().getCodigo();
+		this.titulo = entity.getTitulo();
+		this.observacoes = entity.getObservacoes();
+		this.tecnico = entity.getTecnico().getId();
+		this.cliente = entity.getCliente().getId();
+		this.nomeTecnico = entity.getTecnico().getNome();
+		this.nomeCliente = entity.getCliente().getNome();
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -91,19 +73,19 @@ public class ChamadoDTO implements Serializable {
 		this.dataFechamento = dataFechamento;
 	}
 
-	public Prioridade getPrioridade() {
+	public Integer getPrioridade() {
 		return prioridade;
 	}
 
-	public void setPrioridade(Prioridade prioridade) {
+	public void setPrioridade(Integer prioridade) {
 		this.prioridade = prioridade;
 	}
 
-	public Status getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
@@ -123,44 +105,35 @@ public class ChamadoDTO implements Serializable {
 		this.observacoes = observacoes;
 	}
 
-	public TecnicoDTO getTecnicoDTO() {
-		return tecnicoDTO;
+	public Integer getTecnico() {
+		return tecnico;
 	}
 
-	public void setTecnicoDTO(TecnicoDTO tecnicoDTO) {
-		this.tecnicoDTO = tecnicoDTO;
+	public void setTecnico(Integer tecnico) {
+		this.tecnico = tecnico;
 	}
 
-	public ClienteDTO getClienteDTO() {
-		return clienteDTO;
+	public Integer getCliente() {
+		return cliente;
 	}
 
-	public void setClienteDTO(ClienteDTO clienteDTO) {
-		this.clienteDTO = clienteDTO;
+	public void setCliente(Integer cliente) {
+		this.cliente = cliente;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+	public String getNomeTecnico() {
+		return nomeTecnico;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ChamadoDTO other = (ChamadoDTO) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}		
+	public void setNomeTecnico(String nomeTecnico) {
+		this.nomeTecnico = nomeTecnico;
+	}
+
+	public String getNomeCliente() {
+		return nomeCliente;
+	}
+
+	public void setNomeCliente(String nomeCliente) {
+		this.nomeCliente = nomeCliente;
+	}	
 }
