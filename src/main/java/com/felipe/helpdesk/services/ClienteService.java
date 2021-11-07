@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,8 @@ public class ClienteService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
+	@Autowired
+	private BCryptPasswordEncoder encoder;	
 	
 	public ClienteDTO findById(Integer id){
 		Optional<Cliente> optional =  clienteRepository.findById(id);
@@ -48,6 +51,7 @@ public class ClienteService {
 	@Transactional
 	public ClienteDTO create(ClienteDTO dto) {
 		dto.setId(null);
+		dto.setSenha(encoder.encode(dto.getSenha()));
 		validarPorCpfEEmail(dto);
 		Cliente cliente = clienteRepository.save(new Cliente(dto));			
 		
