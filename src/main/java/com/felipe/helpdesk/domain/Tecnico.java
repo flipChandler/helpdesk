@@ -18,7 +18,7 @@ public class Tecnico extends Pessoa {
 	private static final long serialVersionUID = 1L;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "tecnico", fetch = FetchType.EAGER) // um tecnico para n chamados | "tecnico" é o objeto que está em Chamado
+	@OneToMany(mappedBy = "tecnico", fetch = FetchType.LAZY) // um tecnico para n chamados | "tecnico" é o objeto que está em Chamado
 	private List<Chamado> chamados = new ArrayList<>();
 	
 	
