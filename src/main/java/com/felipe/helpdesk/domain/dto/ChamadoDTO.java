@@ -1,26 +1,24 @@
-package com.felipe.helpdesk.domain;
+package com.felipe.helpdesk.domain.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.felipe.helpdesk.domain.Chamado;
+import com.felipe.helpdesk.domain.Cliente;
+import com.felipe.helpdesk.domain.Tecnico;
 import com.felipe.helpdesk.domain.enums.Prioridade;
 import com.felipe.helpdesk.domain.enums.Status;
 
-@Entity
-public class Chamado implements Serializable {
+
+public class ChamadoDTO implements Serializable {
+	
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
@@ -34,27 +32,38 @@ public class Chamado implements Serializable {
 	private String titulo;
 	private String observacoes;
 	
-	@ManyToOne
-	@JoinColumn(name = "tecnico_id")
-	private Tecnico tecnico;
+	private TecnicoDTO tecnicoDTO;
 	
-	@ManyToOne
-	@JoinColumn(name = "cliente_id")
-	private Cliente cliente;
+	private ClienteDTO clienteDTO;
 	
-	public Chamado(Integer id, Prioridade prioridade, Status status, String titulo, String observacoes, Tecnico tecnico,
-			Cliente cliente) {
+	@Autowired
+	private ModelMapper mapper;
+	
+	
+	public ChamadoDTO(Integer id, Prioridade prioridade, Status status, String titulo, String observacoes) {
 		super();
 		this.id = id;
 		this.prioridade = prioridade;
 		this.status = status;
 		this.titulo = titulo;
 		this.observacoes = observacoes;
-		this.tecnico = tecnico;
-		this.cliente = cliente;
 	}
 	
-	public Chamado() {
+	public ChamadoDTO(Chamado chamado) {
+		this.id = chamado.getId();
+		this.prioridade = chamado.getPrioridade();
+		this.status = chamado.getStatus();
+		this.titulo = chamado.getTitulo();
+		this.observacoes = chamado.getObservacoes();
+	}
+	
+	public ChamadoDTO(Chamado chamado, Tecnico tecnico, Cliente cliente) {
+		this(chamado);
+		this.clienteDTO = mapper.map(cliente, ClienteDTO.class);
+		this.tecnicoDTO = mapper.map(tecnico, TecnicoDTO.class);
+	}
+	
+	public ChamadoDTO() {
 		
 	}
 	
@@ -114,27 +123,27 @@ public class Chamado implements Serializable {
 		this.observacoes = observacoes;
 	}
 
-	public Tecnico getTecnico() {
-		return tecnico;
+	public TecnicoDTO getTecnicoDTO() {
+		return tecnicoDTO;
 	}
 
-	public void setTecnico(Tecnico tecnico) {
-		this.tecnico = tecnico;
+	public void setTecnicoDTO(TecnicoDTO tecnicoDTO) {
+		this.tecnicoDTO = tecnicoDTO;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public ClienteDTO getClienteDTO() {
+		return clienteDTO;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setClienteDTO(ClienteDTO clienteDTO) {
+		this.clienteDTO = clienteDTO;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -146,12 +155,12 @@ public class Chamado implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Chamado other = (Chamado) obj;
-		if (cliente == null) {
-			if (other.cliente != null)
+		ChamadoDTO other = (ChamadoDTO) obj;
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!cliente.equals(other.cliente))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}		
 }

@@ -29,6 +29,7 @@ public class DBService {
 
 	public void instanciaDB() {
 		Tecnico tecnico1 = new Tecnico(null, "Felipe Santos", "05062419042", "felipe@gmail.com", "123");
+		tecnico1.addPerfil(Perfil.ADMIN);
 		Tecnico tecnico2 = new Tecnico(null, "Jackie Brown", "83044666007", "jackie@gmail.com", "456");
 		Tecnico tecnico3 = new Tecnico(null, "Ayn Rand", "35661064020", "rand@gmail.com", "789");
 		Tecnico tecnico4 = new Tecnico(null, "Eva Mendes", "21942523041", "eva@gmail.com", "147");
@@ -38,17 +39,33 @@ public class DBService {
 		Cliente cliente3 = new Cliente(null, "Steve Jobs", "07347795001", "jobs@gmail.com", "159");
 		Cliente cliente4 = new Cliente(null, "James Gosling", "16572473090", "gosling@gmail.com", "951");
 
-		Chamado chamado1 = new Chamado(null, Prioridade.MEDIA, Status.ANDAMENTO, "Chamado 01", "Primeiro Chamado",
-				tecnico1, cliente1);
+		Chamado chamado1 = new Chamado(null, 
+									   Prioridade.MEDIA,
+									   Status.ANDAMENTO,
+									   "Chamado 01",
+									   "Primeiro Chamado",
+									   tecnico1, cliente1);
 		
-		Chamado chamado2 = new Chamado(null, Prioridade.BAIXA, Status.ANDAMENTO, "Chamado 02", "Segundo Chamado",
-				tecnico2, cliente4);
+		Chamado chamado2 = new Chamado(null,
+									   Prioridade.BAIXA,
+									   Status.ANDAMENTO,
+									   "Chamado 02",
+									   "Segundo Chamado",
+									   tecnico2, cliente4);
 		
-		Chamado chamado3 = new Chamado(null, Prioridade.ALTA, Status.ANDAMENTO, "Chamado 03", "Terceiro Chamado",
-				tecnico1, cliente2);
+		Chamado chamado3 = new Chamado(null,
+									   Prioridade.ALTA,
+									   Status.ANDAMENTO,
+									   "Chamado 03",
+									   "Terceiro Chamado",
+									   tecnico1, cliente2);
 		
-		Chamado chamado4 = new Chamado(null, Prioridade.MEDIA, Status.ANDAMENTO, "Chamado 04", "Quarto Chamado",
-				tecnico3, cliente1);
+		Chamado chamado4 = new Chamado(null, 
+									   Prioridade.MEDIA,
+									   Status.ANDAMENTO, 
+									   "Chamado 04", 
+									   "Quarto Chamado",
+									   tecnico3, cliente1);
 
 		tecnicoRepository.saveAll(Arrays.asList(tecnico1, tecnico2, tecnico3, tecnico4));
 		clienteRepository.saveAll(Arrays.asList(cliente1, cliente2, cliente3, cliente4));

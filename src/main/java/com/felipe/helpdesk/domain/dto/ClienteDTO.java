@@ -12,10 +12,10 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.felipe.helpdesk.domain.Chamado;
-import com.felipe.helpdesk.domain.Tecnico;
+import com.felipe.helpdesk.domain.Cliente;
 import com.felipe.helpdesk.domain.enums.Perfil;
 
-public class TecnicoDTO implements Serializable{
+public class ClienteDTO implements Serializable{
 
 	
 	private static final long serialVersionUID = 1L;
@@ -40,25 +40,26 @@ public class TecnicoDTO implements Serializable{
 	
 	private List<ChamadoDTO> chamadosDTO = new ArrayList<>();
 
-	public TecnicoDTO() {
+	public ClienteDTO() {
 		super();
+		addPerfil(Perfil.CLIENTE);
 	}
 
-	public TecnicoDTO(Tecnico tecnico) {
+	public ClienteDTO(Cliente cliente) {
 		super();
-		this.id = tecnico.getId();
-		this.nome = tecnico.getNome();
-		this.cpf = tecnico.getCpf();
-		this.email = tecnico.getEmail();
-		this.senha = tecnico.getSenha();
-		this.perfis = tecnico.getPerfis().stream()
+		this.id = cliente.getId();
+		this.nome = cliente.getNome();
+		this.cpf = cliente.getCpf();
+		this.email = cliente.getEmail();
+		this.senha = cliente.getSenha();
+		this.perfis = cliente.getPerfis().stream()
 				.map(perfil -> perfil.getCodigo())
 				.collect(Collectors.toSet());
-		this.dataCriacao = tecnico.getDataCriacao();
+		this.dataCriacao = cliente.getDataCriacao();
 	}
 	
-	public TecnicoDTO(Tecnico tecnico, List<Chamado> chamados) {
-		this(tecnico);
+	public ClienteDTO(Cliente cliente, List<Chamado> chamados) {
+		this(cliente);
 		chamados.forEach(chamado -> chamadosDTO.add(new ChamadoDTO(chamado)));
 	}	
 
@@ -123,4 +124,8 @@ public class TecnicoDTO implements Serializable{
 	public List<ChamadoDTO> getChamados() {
 		return chamadosDTO;
 	}
+
+	public void setChamadosDTO(List<ChamadoDTO> chamados) {
+		this.chamadosDTO = chamados;
+	}	
 }
