@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +27,6 @@ public class TecnicoService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
-	@Autowired
-	private ModelMapper mapper;
 	
 	public TecnicoDTO findById(Integer id){
 		Optional<Tecnico> optional =  tecnicoRepository.findById(id);
@@ -58,13 +55,13 @@ public class TecnicoService {
 	@Transactional
 	public TecnicoDTO update(Integer id, TecnicoDTO dto) {
 		dto.setId(id);
-		Optional<Tecnico> optional = tecnicoRepository.findById(id);
+		TecnicoDTO oldDTO = findById(id);
+		BeanUtils.copyProperties(dto, oldDTO, "id"); // copia dto em oldDTO
 		
-		Tecnico tecnico = optional.get();
-		BeanUtils.copyProperties(dto, tecnico, "id");
+		validarPorCpfEEmail(oldDTO); // validar o objeto passado por parametro | se não validar, lança uma exceção
 		
-		tecnico = tecnicoRepository.save(tecnico);
-		return new TecnicoDTO(tecnico); 
+		Tecnico tecnicoAtualizado = tecnicoRepository.save(new Tecnico(oldDTO));
+		return new TecnicoDTO(tecnicoAtualizado); 
 	}
 
 	public void delete(Integer id) {
@@ -82,12 +79,12 @@ public class TecnicoService {
 
 	private void validarPorCpfEEmail(TecnicoDTO dto) {
 		Optional<Pessoa> optional = pessoaRepository.findByCpf(dto.getCpf());
-		if (optional.isPresent()) {
+		if (optional.isPresent() && optional.get().getId() != dto.getId()) {
 			throw new DataIntegrityViolationException(MessageUtils.CPF_ALREADY_EXISTS);
 		}
 		
 		optional = pessoaRepository.findByEmail(dto.getEmail());
-		if (optional.isPresent()) {
+		if (optional.isPresent() && optional.get().getId() != dto.getId()) {
 			throw new DataIntegrityViolationException(MessageUtils.EMAIL_ALREADY_EXISTS);
 		}
 	}	
