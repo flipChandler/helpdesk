@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.felipe.helpdesk.domain.dto.ChamadoDTO;
 import com.felipe.helpdesk.domain.enums.Prioridade;
 import com.felipe.helpdesk.domain.enums.Status;
 
@@ -56,6 +57,17 @@ public class Chamado implements Serializable {
 	
 	public Chamado() {
 		
+	}
+	
+	public Chamado(ChamadoDTO dto) {
+		super();
+		this.id = dto.getId();
+		this.prioridade = dto.getPrioridade();
+		this.status = dto.getStatus();
+		this.titulo = dto.getTitulo();
+		this.observacoes = dto.getObservacoes();
+		this.tecnico = new Tecnico(dto.getTecnicoDTO());
+		this.cliente = new Cliente(dto.getClienteDTO());
 	}
 	
 	public Integer getId() {

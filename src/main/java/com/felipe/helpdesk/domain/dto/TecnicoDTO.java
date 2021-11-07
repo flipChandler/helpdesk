@@ -120,7 +120,7 @@ public class TecnicoDTO implements Serializable{
 		this.dataCriacao = dataCriacao;
 	}
 
-	public List<ChamadoDTO> getChamados() {
+	public List<ChamadoDTO> getChamadosDTO() {
 		return chamadosDTO;
 	}
 }

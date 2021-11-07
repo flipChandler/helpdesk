@@ -9,4 +9,5 @@ public abstract class MessageUtils {
     public static final String EMAIL_ALREADY_EXISTS = "Email já cadastrado no sistema";
     public static final String CPF_ALREADY_EXISTS = "CPF já cadastrado no sistema";
     public static final String TECNICO_POSSUI_ORDENS_SERVICO = "Técnico possui ordens de serviço e não pode ser deletado!";
+    public static final String TECNICO_NAO_EXISTE = "Não existe técnico para o id informado!";
 }

@@ -65,16 +65,17 @@ public class TecnicoService {
 	}
 
 	public void delete(Integer id) {
-		TecnicoDTO dto = findById(id);
-		if (dto.getChamados().size() > 0) {
+		Optional<Tecnico> optional = tecnicoRepository.fetchTecnicoWithChamados(id);
+		
+		if (optional.isPresent() && optional.get().getChamados().size() > 0) {
 			throw new DataIntegrityViolationException(MessageUtils.TECNICO_POSSUI_ORDENS_SERVICO);
 		}
 		
-		try {
-			tecnicoRepository.deleteById(id);
-		} catch (Exception e) {
-			// TODO: handle exception
+		if (optional.isEmpty()) {
+			throw new DataIntegrityViolationException(MessageUtils.TECNICO_NAO_EXISTE);
 		}
+						
+		tecnicoRepository.deleteById(id);
 	}
 
 	private void validarPorCpfEEmail(TecnicoDTO dto) {
@@ -90,3 +91,4 @@ public class TecnicoService {
 	}	
 	
 }
+
