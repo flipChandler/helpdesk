@@ -62,8 +62,8 @@ public class ClienteService {
 		
 		validarPorCpfEEmail(oldDTO); // validar o objeto passado por parametro | se não validar, lança uma exceção
 		
-		Cliente tecnicoAtualizado = clienteRepository.save(new Cliente(oldDTO));
-		return new ClienteDTO(tecnicoAtualizado); 
+		Cliente clienteAtualizado = clienteRepository.save(new Cliente(oldDTO));
+		return new ClienteDTO(clienteAtualizado); 
 	}
 
 	@Transactional
@@ -71,11 +71,11 @@ public class ClienteService {
 		Optional<Cliente> optional = clienteRepository.fetchClienteWithChamados(id);
 		
 		if (optional.isPresent() && optional.get().getChamados().size() > 0) {
-			throw new DataIntegrityViolationException(MessageUtils.TECNICO_POSSUI_ORDENS_SERVICO);
+			throw new DataIntegrityViolationException(MessageUtils.CLIENTE_POSSUI_ORDENS_SERVICO);
 		}
 		
 		if (optional.isEmpty()) {
-			throw new DataIntegrityViolationException(MessageUtils.TECNICO_NAO_EXISTE);
+			throw new DataIntegrityViolationException(MessageUtils.CLIENTE_NAO_EXISTE);
 		}
 						
 		clienteRepository.deleteById(id);

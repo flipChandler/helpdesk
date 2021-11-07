@@ -1,5 +1,6 @@
 package com.felipe.helpdesk.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,6 +53,15 @@ public class ChamadoService {
 		return new ChamadoDTO(chamado);
 	}
 	
+	public ChamadoDTO update(Integer id, @Valid ChamadoDTO dto) {
+		dto.setId(id);
+		findById(dto.getId());
+		Chamado chamado = newChamado(dto);
+		chamado = chamadoRepository.save(chamado);			
+		
+		return new ChamadoDTO(chamado); 
+	}
+	
 	private Chamado newChamado(ChamadoDTO dto) {
 		TecnicoDTO tecnicoDTO = tecnicoService.findById(dto.getTecnico());
 		ClienteDTO clienteDTO = clienteService.findById(dto.getCliente());
@@ -59,6 +69,10 @@ public class ChamadoService {
 		Chamado chamado = new Chamado();
 		if (dto.getId() != null) {
 			chamado.setId(dto.getId());
+		}
+		
+		if(dto.getStatus().equals(2)) {
+			chamado.setDataFechamento(LocalDate.now());
 		}
 		
 			chamado.setTecnico(new Tecnico(tecnicoDTO));
@@ -69,4 +83,6 @@ public class ChamadoService {
 			chamado.setObservacoes(dto.getObservacoes());
 		return chamado;
 	}
+
+	
 }

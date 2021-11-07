@@ -55,8 +55,8 @@ public class ClienteResource {
 	
 	@PutMapping(value ="/{id}")
 	public ResponseEntity<ClienteDTO> update(@PathVariable Integer id, @Valid @RequestBody ClienteDTO dto) {
-		ClienteDTO tecnicoDTO = clienteService.update(id, dto);
-		return ResponseEntity.ok().body(tecnicoDTO);
+		ClienteDTO clienteDTO = clienteService.update(id, dto);
+		return ResponseEntity.ok().body(clienteDTO);
 	}
 	
 	@DeleteMapping(value = "/{id}")
