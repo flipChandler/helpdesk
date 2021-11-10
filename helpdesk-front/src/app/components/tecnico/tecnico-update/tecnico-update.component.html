@@ -1,9 +1,9 @@
 <div class="container mat-elevation-z8">
     <form class="form">
-        <h1 class="fullWidth">Cadastrar Técnico</h1>
+        <h1 class="fullWidth">Atualizar Técnico</h1>
         <img class="fullWidth" src="assets/img/tecnico-create.svg" alt="Help Desk - FATEC">
 
-        <section class="section" required>
+        <section class="section">
             <mat-checkbox 
                 (click)="addPerfil(0)" 
                 class="margin" 
@@ -12,6 +12,7 @@
             </mat-checkbox>            
             <mat-checkbox 
                 (click)="addPerfil(1)" 
+                [checked]="true"
                 class="margin" 
                 color="primary">
                 Cliente
@@ -73,14 +74,14 @@
         </mat-form-field>
 
         <button 
-            (click)="create()"
+            (click)="update()"
             [disabled]="!validaCampos()"
             class="fullWidth mat-elevation-z4" 
             mat-flat-button color="primary">
-            Cadastrar
+            Atualizar
         </button>
         <button
-            routerLink="../" 
+            routerLink="../../" 
             class="fullWidth mat-elevation-z4" 
             mat-stroked-button 
             color="warn">
