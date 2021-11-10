@@ -1,5 +1,6 @@
 package com.felipe.helpdesk.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,6 +54,7 @@ public class TecnicoService {
 		dto.setId(null);
 		dto.setSenha(encoder.encode(dto.getSenha()));
 		validarPorCpfEEmail(dto);
+		dto.setDataCriacao(LocalDate.now());
 		Tecnico tecnico = tecnicoRepository.save(new Tecnico(dto));			
 		
 		return new TecnicoDTO(tecnico);
