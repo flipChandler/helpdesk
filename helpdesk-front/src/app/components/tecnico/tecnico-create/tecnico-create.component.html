@@ -4,14 +4,30 @@
         <img class="fullWidth" src="assets/img/tecnico-create.svg" alt="Help Desk - FATEC">
 
         <section class="section">
-            <mat-checkbox class="margin" color="primary">Admin</mat-checkbox>            
-            <mat-checkbox class="margin" color="primary">Técnico</mat-checkbox>            
-            <mat-checkbox class="margin" color="primary">Cliente</mat-checkbox>            
+            <mat-checkbox 
+                (click)="addPerfil(0)" 
+                class="margin" 
+                color="primary">
+                Admin
+            </mat-checkbox>            
+            <mat-checkbox 
+                (click)="addPerfil(1)" 
+                class="margin" 
+                color="primary">
+                Cliente
+            </mat-checkbox>            
+            <mat-checkbox 
+                (click)="addPerfil(2)" 
+                class="margin" 
+                color="primary">
+                Técnico
+            </mat-checkbox>            
         </section>
 
         <mat-form-field class="fullWidth" appearance="legacy">
             <mat-label>Nome</mat-label>
             <input 
+                [(ngModel)]="tecnico.nome"
                 [formControl]="nome"
                 required                
                 matInput 
@@ -23,7 +39,8 @@
 
         <mat-form-field class="fullWidth" appearance="legacy">
             <mat-label>CPF</mat-label>
-            <input 
+            <input
+            [(ngModel)]="tecnico.cpf" 
                 [formControl]="cpf"
                 required 
                 matInput 
@@ -35,6 +52,7 @@
         <mat-form-field class="fullWidth" appearance="legacy">
             <mat-label>E-mail</mat-label>
             <input 
+            [(ngModel)]="tecnico.email"
                 [formControl]="email"
                 required 
                 matInput 
@@ -45,6 +63,7 @@
         <mat-form-field class="fullWidth" appearance="legacy">
             <mat-label>Senha</mat-label>
             <input
+                [(ngModel)]="tecnico.senha"
                 [formControl]="senha"
                 required  
                 type="password" 
@@ -54,6 +73,7 @@
         </mat-form-field>
 
         <button 
+            (click)="create()"
             [disabled]="!validaCampos()"
             class="fullWidth mat-elevation-z4" 
             mat-flat-button color="primary">
