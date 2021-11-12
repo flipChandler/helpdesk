@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.felipe.helpdesk.domain.Pessoa;
 import com.felipe.helpdesk.domain.Tecnico;
 import com.felipe.helpdesk.domain.dto.TecnicoDTO;
+import com.felipe.helpdesk.domain.enums.Perfil;
 import com.felipe.helpdesk.repositories.PessoaRepository;
 import com.felipe.helpdesk.repositories.TecnicoRepository;
 import com.felipe.helpdesk.services.exceptions.DataIntegrityViolationException;
@@ -43,6 +42,7 @@ public class TecnicoService {
 		return new TecnicoDTO(optional.get());
 	}
 
+	
 	public List<TecnicoDTO> findAll() {
 		return tecnicoRepository.findAll()
 				.stream().map(entity -> new TecnicoDTO(entity))
@@ -52,19 +52,29 @@ public class TecnicoService {
 	@Transactional
 	public TecnicoDTO create(TecnicoDTO dto) {
 		dto.setId(null);
-		dto.setSenha(encoder.encode(dto.getSenha()));
+		dto.setSenha(encoder.encode(dto.getSenha()));	
 		validarPorCpfEEmail(dto);
 		dto.setDataCriacao(LocalDate.now());
+		dto.addPerfil(Perfil.CLIENTE);
 		Tecnico tecnico = tecnicoRepository.save(new Tecnico(dto));			
 		
 		return new TecnicoDTO(tecnico);
 	}
 	
 	@Transactional
-	public TecnicoDTO update(Integer id, @Valid TecnicoDTO dto) {
+	public TecnicoDTO update(Integer id, TecnicoDTO dto) {
 		dto.setId(id);
 		TecnicoDTO oldDTO = findById(id);
+		
+		// se a senha foi alterada, encoda novamente com a nova senha
+		if (!dto.getSenha().equals(oldDTO.getSenha())) { 
+			dto.setSenha(encoder.encode(dto.getSenha()));			
+		}
 		BeanUtils.copyProperties(dto, oldDTO, "id"); // copia dto em oldDTO
+		
+
+		dto.getPerfis().stream() .forEach(perfil -> oldDTO.addPerfil(perfil));
+		
 		
 		validarPorCpfEEmail(oldDTO); // validar o objeto passado por parametro | se não validar, lança uma exceção
 		
