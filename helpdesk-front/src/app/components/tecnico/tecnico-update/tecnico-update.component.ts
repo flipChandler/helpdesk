@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Tecnico } from 'src/app/models/tecnico';
@@ -22,32 +22,33 @@ export class TecnicoUpdateComponent implements OnInit {
     dataCriacao: ''
   }
 
+
   nome: FormControl = new FormControl(null, Validators.minLength(3));
   cpf: FormControl = new FormControl(null, Validators.required);
   email: FormControl = new FormControl(null, Validators.email);
   senha: FormControl = new FormControl(null, Validators.minLength(3));
 
+
   constructor(private tecnicoService: TecnicoService,
               private toast: ToastrService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              ) { }
+              
 
   ngOnInit(): void {
     this.tecnico.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.findById();
-    
+    this.findById();    
   }
 
   findById(): void {
     this.tecnicoService.findById(this.tecnico.id).subscribe (response => {
       response.perfis = [];
-      this.tecnico = response;
-      console.log(this.tecnico);
+      this.tecnico = response;     
     })
   }
 
   update(): void {
-    console.log(this.tecnico);
     this.tecnicoService.update(this.tecnico).subscribe(() => {
       this.toast.success('Técnico atualizado com sucesso', 'Update');
       this.router.navigate(['tecnicos']);
@@ -74,6 +75,5 @@ export class TecnicoUpdateComponent implements OnInit {
     return this.nome.valid && this.cpf.valid
       && this.email.valid && this.senha.valid;
   }
-
 
 }

@@ -12,14 +12,18 @@
             </mat-checkbox>            
             <mat-checkbox 
                 (click)="addPerfil(1)" 
+                [checked]="true"
                 class="margin" 
-                color="primary">
+                color="primary"
+                [disabled]="true">
                 Cliente
             </mat-checkbox>            
             <mat-checkbox 
-                (click)="addPerfil(2)" 
+                (click)="addPerfil(2)"
+                [checked]="true" 
                 class="margin" 
-                color="primary">
+                color="primary" 
+                [disabled]="true">
                 Técnico
             </mat-checkbox>            
         </section>
