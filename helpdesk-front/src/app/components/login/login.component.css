@@ -33,3 +33,7 @@ button {
     margin-top: 1.5rem;
     border-radius: 1rem;
 }
+
+mat-icon {
+    opacity: .6;
+}

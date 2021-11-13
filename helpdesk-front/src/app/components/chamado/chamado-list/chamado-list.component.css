@@ -27,7 +27,8 @@ table {
   }
 
   .delete {
-      color: red;
+      color: black;
+      opacity: .8;
   }
 
   mat-radio-group {
@@ -35,3 +36,9 @@ table {
       justify-content: space-around;
       margin-bottom: 1rem;
   }
+
+  a.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: .4;
+}

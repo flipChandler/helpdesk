@@ -22,8 +22,6 @@ export class ChamadoReadComponent implements OnInit {
     nomeTecnico: '',
   }
 
-
-
   constructor(private chamadoService: ChamadoService,
               private toastService: ToastrService,
               private activatedRoute: ActivatedRoute) { }
