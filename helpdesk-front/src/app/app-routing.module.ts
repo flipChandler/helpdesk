@@ -13,6 +13,7 @@ import { ClienteDeleteComponent } from './components/cliente/cliente-delete/clie
 import { ClienteUpdateComponent } from './components/cliente/cliente-update/cliente-update.component';
 import { ClienteCreateComponent } from './components/cliente/cliente-create/cliente-create.component';
 import { ChamadoListComponent } from './components/chamado/chamado-list/chamado-list.component';
+import { ChamadoCreateComponent } from './components/chamado/chamado-create/chamado-create.component';
 const routes: Routes = [
   {
     path: 'login',
@@ -61,6 +62,10 @@ const routes: Routes = [
         path: 'chamados',
         component: ChamadoListComponent
       },
+      {
+        path: 'chamados/create',
+        component: ChamadoCreateComponent
+      },
       
     ]
   },
@@ -68,6 +73,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-exports: [RouterModule]
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }
