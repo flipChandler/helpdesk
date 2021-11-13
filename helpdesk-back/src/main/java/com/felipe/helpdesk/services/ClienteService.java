@@ -62,6 +62,10 @@ public class ClienteService {
 	public ClienteDTO update(Integer id, @Valid ClienteDTO dto) {
 		dto.setId(id);
 		ClienteDTO oldDTO = findById(id);
+		
+		if (!dto.getSenha().equals(oldDTO.getSenha())) {
+			dto.setSenha(encoder.encode(dto.getSenha()));
+		}
 		BeanUtils.copyProperties(dto, oldDTO, "id"); // copia dto em oldDTO
 		
 		validarPorCpfEEmail(oldDTO); // validar o objeto passado por parametro | se não validar, lança uma exceção
