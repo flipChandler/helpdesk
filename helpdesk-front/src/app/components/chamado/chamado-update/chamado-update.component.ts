@@ -7,7 +7,7 @@ import { TecnicoService } from 'src/app/services/tecnico.service';
 import { ChamadoService } from 'src/app/services/chamado.service';
 import { Chamado } from 'src/app/models/chamado';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-chamado-update',
@@ -41,11 +41,22 @@ export class ChamadoUpdateComponent implements OnInit {
               private clienteService: ClienteService,
               private tecnicoService: TecnicoService,
               private toastService: ToastrService,
-              private router: Router) { }
+              private router: Router,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.chamado.id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.findById();
     this.findAllClientes();
     this.findAllTecnicos();
+  }
+
+  findById() {
+    this.chamadoService.findById(this.chamado.id).subscribe(response => {
+      this.chamado = response;
+    }, exception => {
+      this.toastService.error(exception.error.error);
+    });
   }
 
   findAllClientes() {
@@ -56,13 +67,13 @@ export class ChamadoUpdateComponent implements OnInit {
 
   findAllTecnicos() {
     this.tecnicoService.findAll().subscribe(response => {
-      this.tecnicos =  response;
+      this.tecnicos =  response;      
     })
   }
 
   update() {
-    this.chamadoService.create(this.chamado).subscribe(response => {
-      this.toastService.success('Chamado criado com sucesso!', 'Novo Chamado');
+    this.chamadoService.update(this.chamado).subscribe(response => {
+      this.toastService.success('Chamado atualizado com sucesso!', 'Update Chamado');
       this.router.navigate(['chamados']);
     }, exception => {
       this.toastService.error(exception.error.error);
@@ -75,6 +86,38 @@ export class ChamadoUpdateComponent implements OnInit {
            this.titulo.valid && 
            this.observacoes.valid && 
            this.tecnico.valid && 
-           this.cliente.valid
+           this.cliente.valid;
+  }
+
+  retornaStatus(valor: any): string {
+    let status = '';
+    switch (valor) {
+      case 0:
+        status = 'ABERTO';
+        break;
+      case 1:
+        status = 'EM ANDAMENTO';
+        break;
+      case 2:
+        status = 'ENCERRADO';
+        break;
+    }
+    return status;
+  }
+
+  retornaPrioridade(valor: any): string {
+    let prioridade = '';
+    switch (valor) {
+      case 0:
+        prioridade = 'BAIXA';
+        break;
+      case 1:
+        prioridade = 'MÉDIA';
+        break;
+      case 2:
+        prioridade = 'ALTA';
+        break;
+    }
+    return prioridade;
   }
 }

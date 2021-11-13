@@ -18,7 +18,7 @@
 
       <div class="status-prioridade">
         <mat-form-field appearance="outline">
-            <mat-label>Selecione STATUS</mat-label>
+            <mat-label>STATUS ({{ retornaStatus(chamado.status) }})</mat-label>
             <mat-select [(ngModel)]="chamado.status"
                         [formControl]="status"
                         required>
@@ -28,7 +28,7 @@
             </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>Selecione PRIORIDADE</mat-label>
+            <mat-label>PRIORIDADE ({{ retornaPrioridade(chamado.prioridade) }})</mat-label>
             <mat-select [(ngModel)]="chamado.prioridade"
                         [formControl]="prioridade"
                         required>
@@ -41,7 +41,7 @@
 
       <div class="tecnico">
         <mat-form-field class="fullWidth" appearance="outline">
-            <mat-label>Selecione TÉCNICO</mat-label>
+            <mat-label>TÉCNICO ({{ chamado.nomeTecnico }})</mat-label>
             <mat-select [(ngModel)]="chamado.tecnico"
                         [formControl]="tecnico"
                         required>
@@ -55,7 +55,7 @@
 
       <div class="cliente">
         <mat-form-field class="fullWidth" appearance="outline">
-            <mat-label>Selecione CLIENTE</mat-label>
+            <mat-label>CLIENTE ({{ chamado.nomeCliente }})</mat-label>
             <mat-select [(ngModel)]="chamado.cliente"
                         [formControl]="cliente"
                         required>
@@ -73,7 +73,7 @@
           <textarea [(ngModel)]="chamado.observacoes"
                     [formControl]="observacoes"
                     required
-                    class="descricao"
+                    class="observacoes"
                     matInput 
                     placeholder="Ex. Trocar bateria de notebook queimada...">
           </textarea>
@@ -87,7 +87,7 @@
               color="primary">
               Atualizar
       </button>
-      <button routerLink="../"
+      <button routerLink="../../"
               class="fullWidth mat-elevation-z4" 
               mat-stroked-button 
               color="warn">
