@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ChamadoService } from 'src/app/services/chamado.service';
 import { Chamado } from '../../../models/chamado';
 
 @Component({
@@ -10,46 +11,85 @@ import { Chamado } from '../../../models/chamado';
 })
 export class ChamadoListComponent implements OnInit {
 
-  ELEMENT_DATA: Chamado[] = [
-    {
-      id:                1,
-      dataAbertura:   '21/06/2021',
-      dataFechamento: '21/06/2021',
-      prioridade:      'ALTA',
-      status:          'ANDAMENTO',
-      titulo:          'Chamado 1',
-      observacoes:     'Teste Chamado 1',
-      tecnico:            1,
-      cliente:            6,
-      nomeCliente:     'Felipe Santos',
-      nomeTecnico:     'Dunha'
-    }
-  ]
+  ELEMENT_DATA: Chamado[] = [];
+  FILTERED_DATA: Chamado[] = [];
 
   displayedColumns: string[] = [
-                                'id',
-                                'titulo', 
-                                'cliente',
-                                'tecnico' ,
-                                'dataAbertura', 
-                                'prioridade', 
-                                'status', 
-                                'acoes'
-                              ];
-  dataSource = new MatTableDataSource<Chamado>(this.ELEMENT_DATA);
+    'id',
+    'titulo',
+    'cliente',
+    'tecnico',
+    'dataAbertura',
+    'prioridade',
+    'status',
+    'acoes'
+  ];
+
+  dataSource = new MatTableDataSource<Chamado>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor() { }
+  constructor(private chamadoService: ChamadoService) { }
 
   ngOnInit() {
+    this.findAll();
+  }
+
+  findAll() {
+    return this.chamadoService.findAll().subscribe(response => {
+      this.ELEMENT_DATA = response;
+      this.dataSource = new MatTableDataSource<Chamado>(response);
+      this.dataSource.paginator = this.paginator;
+    })
   }
 
   applyFilter(event: Event) {
     // cada evento no html está sendo recebido nesse filtro
-    const filterValue = (event.target as HTMLInputElement).value; 
+    const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-}
+  retornaStatus(valor: any): string {
+    let status = '';
+    switch (valor) {
+      case 0:
+        status = 'ABERTO';
+        break;
+      case 1:
+        status = 'EM ANDAMENTO';
+        break;
+      case 2:
+        status = 'ENCERRADO';
+        break;
+    }
+    return status;
+  }
 
-// 
+  retornaPrioridade(valor: any): string {
+    let prioridade = '';
+    switch (valor) {
+      case 0:
+        prioridade = 'BAIXA';
+        break;
+      case 1:
+        prioridade = 'MÉDIA';
+        break;
+      case 2:
+        prioridade = 'ALTA';
+        break;
+    }
+    return prioridade;
+  }
+
+  orderByStatus(status: any) {
+    let list: Chamado[] = [];
+    this.ELEMENT_DATA.forEach(element => {
+      if (element.status === status) {
+        list.push(element);
+      }
+    });
+    this.FILTERED_DATA = list;
+    this.dataSource = new MatTableDataSource<Chamado>(list);
+    this.dataSource.paginator = this.paginator;
+  }
+
+}
