@@ -64,6 +64,4 @@ public class ClienteResource {
 		clienteService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	
 }

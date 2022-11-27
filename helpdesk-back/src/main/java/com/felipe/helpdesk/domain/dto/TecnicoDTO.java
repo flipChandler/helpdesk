@@ -17,7 +17,7 @@ import com.felipe.helpdesk.domain.Chamado;
 import com.felipe.helpdesk.domain.Tecnico;
 import com.felipe.helpdesk.domain.enums.Perfil;
 
-public class TecnicoDTO implements Serializable{
+public class TecnicoDTO implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;

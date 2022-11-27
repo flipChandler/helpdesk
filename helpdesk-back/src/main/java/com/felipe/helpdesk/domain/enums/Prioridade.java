@@ -9,7 +9,7 @@ public enum Prioridade {
 	private Integer codigo;
 	private String descricao;
 	
-	private Prioridade(Integer codigo, String descricao) {
+	Prioridade(Integer codigo, String descricao) {
 		this.codigo = codigo;
 		this.descricao = descricao;
 	}

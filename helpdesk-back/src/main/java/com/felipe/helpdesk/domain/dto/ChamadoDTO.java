@@ -11,7 +11,6 @@ import com.felipe.helpdesk.domain.Chamado;
 
 public class ChamadoDTO implements Serializable {
 	
-	
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
@@ -24,6 +23,9 @@ public class ChamadoDTO implements Serializable {
 
 	@NotNull(message = "O campo PRIORIDADE é requerido")
 	private Integer prioridade;
+
+	@NotNull(message = "O campo TIPO SERVICO é requerido")
+	private Integer tipoServico;
 
 	@NotNull(message = "O campo STATUS é requerido")
 	private Integer status;
@@ -49,6 +51,7 @@ public class ChamadoDTO implements Serializable {
 		this.dataAbertura = entity.getDataAbertura();
 		this.dataFechamento = entity.getDataFechamento();
 		this.prioridade = entity.getPrioridade().getCodigo();
+		this.tipoServico = entity.getTipoServico().getCodigo();
 		this.status = entity.getStatus().getCodigo();
 		this.titulo = entity.getTitulo();
 		this.observacoes = entity.getObservacoes();
@@ -88,6 +91,14 @@ public class ChamadoDTO implements Serializable {
 
 	public void setPrioridade(Integer prioridade) {
 		this.prioridade = prioridade;
+	}
+
+	public Integer getTipoServico() {
+		return tipoServico;
+	}
+
+	public void setTipoServico(Integer tipoServico) {
+		this.tipoServico = tipoServico;
 	}
 
 	public Integer getStatus() {
@@ -144,5 +155,5 @@ public class ChamadoDTO implements Serializable {
 
 	public void setNomeCliente(String nomeCliente) {
 		this.nomeCliente = nomeCliente;
-	}	
+	}
 }

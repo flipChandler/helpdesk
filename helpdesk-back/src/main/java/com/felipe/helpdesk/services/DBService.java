@@ -2,6 +2,7 @@ package com.felipe.helpdesk.services;
 
 import java.util.Arrays;
 
+import com.felipe.helpdesk.domain.enums.TipoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class DBService {
 
 		Chamado chamado1 = new Chamado(null, 
 									   Prioridade.MEDIA,
+									   TipoServico.CONFIGURACAO_IMPRESSORA,
 									   Status.ANDAMENTO,
 									   "Chamado 01",
 									   "Primeiro Chamado",
@@ -52,6 +54,7 @@ public class DBService {
 		
 		Chamado chamado2 = new Chamado(null,
 									   Prioridade.BAIXA,
+									   TipoServico.FORMATACAO_CPU,
 									   Status.ANDAMENTO,
 									   "Chamado 02",
 									   "Segundo Chamado",
@@ -59,6 +62,7 @@ public class DBService {
 		
 		Chamado chamado3 = new Chamado(null,
 									   Prioridade.ALTA,
+									   TipoServico.PROBLEMA_CONEXAO,
 									   Status.ANDAMENTO,
 									   "Chamado 03",
 									   "Terceiro Chamado",
@@ -66,6 +70,7 @@ public class DBService {
 		
 		Chamado chamado4 = new Chamado(null, 
 									   Prioridade.MEDIA,
+									   TipoServico.FORMATACAO_NOTEBOOK,
 									   Status.ANDAMENTO, 
 									   "Chamado 04", 
 									   "Quarto Chamado",

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.felipe.helpdesk.domain.enums.TipoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,17 +35,14 @@ public class ChamadoService {
 	private TecnicoService tecnicoService;
 	
 	public ChamadoDTO findById(Integer id) {
-		Optional<Chamado> optional = chamadoRepository.findById(id);
-		if (optional.isEmpty()) {
-			throw new ObjectNotFoundException("Objeto não encontrado! Id = " + id);
-		}
-		return new ChamadoDTO(optional.get());
+		return new ChamadoDTO(chamadoRepository.findById(id)
+				.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id = " + id)));
 	}
 
 	public List<ChamadoDTO> findAll() {
 		List<Chamado> chamados = chamadoRepository.findAll();
 		return chamados.stream()
-				.map(chamado -> new ChamadoDTO(chamado))
+				.map(ChamadoDTO::new)
 				.collect(Collectors.toList());
 	}
 
@@ -71,18 +69,17 @@ public class ChamadoService {
 			chamado.setId(dto.getId());
 		}
 		
-		if(dto.getStatus().equals(2)) {
+		if (dto.getStatus().equals(2)) {
 			chamado.setDataFechamento(LocalDate.now());
 		}
 		
-			chamado.setTecnico(new Tecnico(tecnicoDTO));
-			chamado.setCliente(new Cliente(clienteDTO));
-			chamado.setPrioridade(Prioridade.toEnum(dto.getPrioridade()));
-			chamado.setStatus(Status.toEnum(dto.getStatus()));
-			chamado.setTitulo(dto.getTitulo());
-			chamado.setObservacoes(dto.getObservacoes());
+		chamado.setTecnico(new Tecnico(tecnicoDTO));
+		chamado.setCliente(new Cliente(clienteDTO));
+		chamado.setPrioridade(Prioridade.toEnum(dto.getPrioridade()));
+		chamado.setTipoServico(TipoServico.toEnum(dto.getTipoServico()));
+		chamado.setStatus(Status.toEnum(dto.getStatus()));
+		chamado.setTitulo(dto.getTitulo());
+		chamado.setObservacoes(dto.getObservacoes());
 		return chamado;
 	}
-
-	
 }
