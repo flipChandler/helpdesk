@@ -39,8 +39,14 @@ export class ChamadoListComponent implements OnInit {
       this.ELEMENT_DATA = response;
       this.dataSource = new MatTableDataSource<Chamado>(response);
       this.dataSource.paginator = this.paginator;
+      console.log(this.ELEMENT_DATA)
     })
   }
+
+  getQtdChamados(id: number, filterBy: string) {
+    return this.ELEMENT_DATA.filter(el => el[filterBy] === id).length
+  }
+
 
   applyFilter(event: Event) {
     // cada evento no html está sendo recebido nesse filtro

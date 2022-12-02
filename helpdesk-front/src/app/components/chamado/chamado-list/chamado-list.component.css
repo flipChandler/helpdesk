@@ -42,3 +42,31 @@ table {
     cursor: default;
     opacity: .4;
 }
+
+
+.card-chamados-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    margin-bottom: 1em;
+    align-items: center;
+}
+
+.card-qtd-chamados {
+    min-width: 150px;
+    border-radius: 9px;
+    color: #8e8e8e;
+    padding: 0.5rem;
+    text-align: center;
+    box-shadow: 0px 3px 11px 0px #00000033;
+}
+
+.card-qtd-chamados h2 {
+    margin: 0;
+    margin-bottom: 0.2em;
+}
+
+.card-qtd-chamados span {
+    font-size: 2em;
+    color: #000e6685;
+}
