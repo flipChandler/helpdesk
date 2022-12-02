@@ -20,6 +20,7 @@ export class ChamadoReadComponent implements OnInit {
     cliente:     '',
     nomeCliente: '',
     nomeTecnico: '',
+    tipoServico: ''
   }
 
   constructor(private chamadoService: ChamadoService,

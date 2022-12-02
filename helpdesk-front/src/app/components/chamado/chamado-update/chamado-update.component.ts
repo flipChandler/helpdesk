@@ -25,6 +25,7 @@ export class ChamadoUpdateComponent implements OnInit {
     cliente:     '',
     nomeCliente: '',
     nomeTecnico: '',
+    tipoServico: '',
   }
 
   clientes: Cliente[] = [];

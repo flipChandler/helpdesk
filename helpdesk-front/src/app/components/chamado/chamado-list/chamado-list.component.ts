@@ -3,6 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ChamadoService } from 'src/app/services/chamado.service';
 import { Chamado } from '../../../models/chamado';
+import { first, map } from 'rxjs/operators'
+import { TipoServicos } from '../chamado-create/data/tipoServicos';
 
 @Component({
   selector: 'app-chamado-list',
@@ -19,6 +21,7 @@ export class ChamadoListComponent implements OnInit {
     'titulo',
     'cliente',
     'tecnico',
+    'tipoServico',
     'dataAbertura',
     'prioridade',
     'status',
@@ -28,6 +31,29 @@ export class ChamadoListComponent implements OnInit {
   dataSource = new MatTableDataSource<Chamado>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  labels = TipoServicos.map(el => el.descricao)
+  data = {
+    // labels: this.labels,
+    datasets: [
+        {
+          data: [0,0,0,0,0,0,0],
+          backgroundColor: [
+              "#00e297",
+              "#009f6a",
+              "#009ed8",
+              "#00729c",
+              "#0042cf",
+              "#002d8e",
+              "#8a00b7"
+          ],
+        }
+    ]
+  };
+
+  options = {
+    legend: { display: false},
+  }
+
   constructor(private chamadoService: ChamadoService) { }
 
   ngOnInit() {
@@ -35,12 +61,29 @@ export class ChamadoListComponent implements OnInit {
   }
 
   findAll() {
-    return this.chamadoService.findAll().subscribe(response => {
-      this.ELEMENT_DATA = response;
-      this.dataSource = new MatTableDataSource<Chamado>(response);
-      this.dataSource.paginator = this.paginator;
-      console.log(this.ELEMENT_DATA)
-    })
+    return this.chamadoService.findAll()
+      .pipe(
+        first()
+      ).subscribe(response => {
+
+        let chartData = [0,0,0,0,0,0,0]
+
+        response.forEach(el => chartData[+el.tipoServico]++)
+        
+        this.data.datasets[0].data = chartData
+        this.data = {...this.data}
+
+        this.ELEMENT_DATA = response.map(
+          chamado => {
+            chamado.tipoServico = TipoServicos.find(el => String(el.id) == chamado.tipoServico)!.descricao
+            return chamado
+          }
+        );
+
+        this.dataSource = new MatTableDataSource<Chamado>(response);
+        this.dataSource.paginator = this.paginator;
+        console.log(this.ELEMENT_DATA)
+      })
   }
 
   getQtdChamados(id: number, filterBy: string) {

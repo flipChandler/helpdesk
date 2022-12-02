@@ -46,7 +46,7 @@ public class DBService {
 
 		Chamado chamado1 = new Chamado(null, 
 									   Prioridade.MEDIA,
-									   TipoServico.CONFIGURACAO_IMPRESSORA,
+									   TipoServico.REPARO_NOTEBOOK,
 									   Status.ANDAMENTO,
 									   "Chamado 01",
 									   "Primeiro Chamado",
@@ -54,7 +54,7 @@ public class DBService {
 		
 		Chamado chamado2 = new Chamado(null,
 									   Prioridade.BAIXA,
-									   TipoServico.FORMATACAO_CPU,
+									   TipoServico.REPARO_MONITOR,
 									   Status.ANDAMENTO,
 									   "Chamado 02",
 									   "Segundo Chamado",
@@ -62,7 +62,7 @@ public class DBService {
 		
 		Chamado chamado3 = new Chamado(null,
 									   Prioridade.ALTA,
-									   TipoServico.PROBLEMA_CONEXAO,
+									   TipoServico.REPARO_CPU,
 									   Status.ANDAMENTO,
 									   "Chamado 03",
 									   "Terceiro Chamado",
@@ -76,9 +76,43 @@ public class DBService {
 									   "Quarto Chamado",
 									   tecnico3, cliente1);
 
+		Chamado chamado5 = new Chamado(null, 
+									   Prioridade.MEDIA,
+									   TipoServico.FORMATACAO_CPU,
+									   Status.ANDAMENTO,
+									   "Chamado 05",
+									   "Quinto Chamado",
+									   tecnico1, cliente1);
+		
+		Chamado chamado6 = new Chamado(null,
+									   Prioridade.BAIXA,
+									   TipoServico.PROBLEMA_CONEXAO,
+									   Status.ANDAMENTO,
+									   "Chamado 06",
+									   "Sexto Chamado",
+									   tecnico2, cliente4);
+		
+		Chamado chamado7 = new Chamado(null,
+									   Prioridade.ALTA,
+									   TipoServico.CONFIGURACAO_IMPRESSORA,
+									   Status.ANDAMENTO,
+									   "Chamado 07",
+									   "Sétimo Chamado",
+									   tecnico1, cliente2);
+		
+		Chamado chamado8 = new Chamado(null, 
+									   Prioridade.MEDIA,
+									   TipoServico.FORMATACAO_NOTEBOOK,
+									   Status.ANDAMENTO, 
+									   "Chamado 08", 
+									   "Oitavo Chamado",
+									   tecnico3, cliente1);
+
 		tecnicoRepository.saveAll(Arrays.asList(tecnico1, tecnico2, tecnico3, tecnico4));
 		clienteRepository.saveAll(Arrays.asList(cliente1, cliente2, cliente3, cliente4));
-		chamadoRepository.saveAll(Arrays.asList(chamado1, chamado2, chamado3, chamado4));
+		chamadoRepository.saveAll(Arrays.asList(
+			chamado1, chamado2, chamado3, chamado4,chamado5, chamado6, chamado7, chamado8
+		));
 
 	}
 }
