@@ -17,7 +17,7 @@ import com.felipe.helpdesk.domain.Chamado;
 import com.felipe.helpdesk.domain.Cliente;
 import com.felipe.helpdesk.domain.enums.Perfil;
 
-public class ClienteDTO implements Serializable{
+public class ClienteDTO implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;

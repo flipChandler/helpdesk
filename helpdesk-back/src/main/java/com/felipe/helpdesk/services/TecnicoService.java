@@ -34,25 +34,22 @@ public class TecnicoService {
 	private BCryptPasswordEncoder encoder;	// criptografa a senha no banco de dados
 	
 	public TecnicoDTO findById(Integer id){
-		Optional<Tecnico> optional =  tecnicoRepository.findById(id);
-		if (optional.isEmpty()) {
-			throw new ObjectNotFoundException("Objeto não encontrado! Id = " + id);
-		}		
-		
-		return new TecnicoDTO(optional.get());
+		return new TecnicoDTO(tecnicoRepository.findById(id)
+				.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id = " + id)));
 	}
-
 	
 	public List<TecnicoDTO> findAll() {
 		return tecnicoRepository.findAll()
-				.stream().map(entity -> new TecnicoDTO(entity))
+				.stream()
+				.map(TecnicoDTO::new)
 				.collect(Collectors.toList()) ;
 	}
 
 	@Transactional
 	public TecnicoDTO create(TecnicoDTO dto) {
 		dto.setId(null);
-		dto.setSenha(encoder.encode(dto.getSenha()));	
+		dto.setSenha(encoder.encode(dto.getSenha()));
+
 		validarPorCpfEEmail(dto);
 		dto.setDataCriacao(LocalDate.now());
 		dto.addPerfil(Perfil.CLIENTE);
@@ -71,10 +68,10 @@ public class TecnicoService {
 			dto.setSenha(encoder.encode(dto.getSenha()));			
 		}
 		BeanUtils.copyProperties(dto, oldDTO, "id"); // copia dto em oldDTO
-		
 
-		dto.getPerfis().stream() .forEach(perfil -> oldDTO.addPerfil(perfil));
-		
+		dto.getPerfis()
+				.stream()
+				.forEach(perfil -> oldDTO.addPerfil(perfil));
 		
 		validarPorCpfEEmail(oldDTO); // validar o objeto passado por parametro | se não validar, lança uma exceção
 		
@@ -106,7 +103,6 @@ public class TecnicoService {
 		if (optional.isPresent() && optional.get().getId() != dto.getId()) {
 			throw new DataIntegrityViolationException(MessageUtils.EMAIL_ALREADY_EXISTS);
 		}
-	}	
-	
+	}
 }
 

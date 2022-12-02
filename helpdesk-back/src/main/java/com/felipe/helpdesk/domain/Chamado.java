@@ -1,19 +1,14 @@
 package com.felipe.helpdesk.domain;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.felipe.helpdesk.domain.dto.ChamadoDTO;
 import com.felipe.helpdesk.domain.enums.Prioridade;
 import com.felipe.helpdesk.domain.enums.Status;
+import com.felipe.helpdesk.domain.enums.TipoServico;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 public class Chamado implements Serializable {
@@ -31,6 +26,7 @@ public class Chamado implements Serializable {
 	private LocalDate dataFechamento;
 
 	private Prioridade prioridade;
+	private TipoServico tipoServico;
 	private Status status;
 	private String titulo;
 	private String observacoes;
@@ -43,11 +39,12 @@ public class Chamado implements Serializable {
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	public Chamado(Integer id, Prioridade prioridade, Status status, String titulo, String observacoes, Tecnico tecnico,
+	public Chamado(Integer id, Prioridade prioridade, TipoServico tipoServico, Status status, String titulo, String observacoes, Tecnico tecnico,
 			Cliente cliente) {
 		super();
 		this.id = id;
 		this.prioridade = prioridade;
+		this.tipoServico = tipoServico;
 		this.status = status;
 		this.titulo = titulo;
 		this.observacoes = observacoes;
@@ -66,8 +63,7 @@ public class Chamado implements Serializable {
 		this.status = Status.toEnum(dto.getStatus());
 		this.titulo = dto.getTitulo();
 		this.observacoes = dto.getObservacoes();
-	}	
-
+	}
 	
 	public Integer getId() {
 		return id;
@@ -139,6 +135,14 @@ public class Chamado implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public TipoServico getTipoServico() {
+		return tipoServico;
+	}
+
+	public void setTipoServico(TipoServico tipoServico) {
+		this.tipoServico = tipoServico;
 	}
 
 	@Override
