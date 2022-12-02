@@ -1,5 +1,6 @@
+import { TipoServicos } from './data/tipoServicos';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Cliente } from 'src/app/models/cliente';
 import { Tecnico } from 'src/app/models/tecnico';
 import { ClienteService } from 'src/app/services/cliente.service';
@@ -16,66 +17,63 @@ import { Router } from '@angular/router';
 })
 export class ChamadoCreateComponent implements OnInit {
 
-  chamado: Chamado = {
-    prioridade:  '',
-    status:      '',
-    titulo:      '',
-    observacoes: '',
-    tecnico:     '',
-    cliente:     '',
-    nomeCliente: '',
-    nomeTecnico: '',
-  }
+  chamadoForm: FormGroup
 
   clientes: Cliente[] = [];
   tecnicos: Tecnico[] = [];
 
-  prioridade: FormControl = new FormControl(null, [Validators.required]);
-  status:     FormControl = new FormControl(null, [Validators.required]);
-  titulo:     FormControl = new FormControl(null, [Validators.required]);
-  observacoes:FormControl = new FormControl(null, [Validators.required]);
-  tecnico:    FormControl = new FormControl(null, [Validators.required]);
-  cliente:    FormControl = new FormControl(null, [Validators.required]);
+  constructor(
+    private chamadoService: ChamadoService,
+    private clienteService: ClienteService,
+    private tecnicoService: TecnicoService,
+    private toastService: ToastrService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
 
-  constructor(private chamadoService: ChamadoService,
-              private clienteService: ClienteService,
-              private tecnicoService: TecnicoService,
-              private toastService: ToastrService,
-              private router: Router) { }
+    this.chamadoForm = this.fb.group({
+      titulo:      ['', [Validators.required]],
+      prioridade:  ['', [Validators.required]],
+      status:      ['', [Validators.required]],
+      observacoes: ['', [Validators.required]],
+      tecnico:     ['', [Validators.required]],
+      cliente:     ['', [Validators.required]],
+      tipoServico: ['', [Validators.required]]
+    })
+
+    this.chamadoForm.valueChanges.subscribe(() => console.log(this.chamadoForm.value))
+  }
 
   ngOnInit(): void {
     this.findAllClientes();
     this.findAllTecnicos();
   }
 
+  get tipoServicos() {
+    return TipoServicos
+  }
+
   findAllClientes() {
     this.clienteService.findAll().subscribe(response => {
-      this.clientes = response;      
+      this.clientes = response;
+      console.log(this.clientes)
     });
   }
 
   findAllTecnicos() {
     this.tecnicoService.findAll().subscribe(response => {
       this.tecnicos =  response;
+      console.log(this.tecnicos)
     })
   }
 
   create() {
-    this.chamadoService.create(this.chamado).subscribe(response => {
+    this.chamadoService.create(this.chamadoForm.value).subscribe(response => {
       this.toastService.success('Chamado criado com sucesso!', 'Novo Chamado');
       this.router.navigate(['chamados']);
     }, exception => {
       this.toastService.error(exception.error.error);
     })
-  }
-
-  validaCampos(): boolean {
-    return this.prioridade.valid && 
-           this.status.valid && 
-           this.titulo.valid && 
-           this.observacoes.valid && 
-           this.tecnico.valid && 
-           this.cliente.valid
   }
 
 }

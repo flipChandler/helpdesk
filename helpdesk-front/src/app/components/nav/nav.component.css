@@ -27,3 +27,9 @@ img {
     color: white;
     background: linear-gradient(90deg, rgba(18,66,93,1) 0%, rgba(114,142,156,1) 51%, rgba(7,169,182,0.9444152661064426) 89%);
 }
+
+.sidenav-content {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 56px 1fr;
+}
